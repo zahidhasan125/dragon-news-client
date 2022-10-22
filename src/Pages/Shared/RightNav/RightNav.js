@@ -1,4 +1,4 @@
-import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
+import { GithubAuthProvider, GoogleAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 import { useContext } from 'react';
 import { Button, ButtonGroup, ListGroup } from 'react-bootstrap';
 import { FaGoogle, FaGithub, FaFacebook, FaYoutube, FaTwitter, FaTwitch, FaWhatsapp, FaDiscord } from 'react-icons/fa';
@@ -13,6 +13,7 @@ const RightNav = () => {
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
+    const twitterProvider = new TwitterAuthProvider();
 
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
@@ -38,11 +39,20 @@ const RightNav = () => {
 
     }
 
+    const handleTwitterSignIn = () => {
+        providerLogin(twitterProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => {
+            console.error(error)
+        })
+    }
+
     const handleSignOut = () => {
         logOut()
-            .then(result => {
-            console.log(result);
-            })
+            .then(() => {})
             .catch(error => {
             console.error(error);
         })
@@ -55,6 +65,7 @@ const RightNav = () => {
                     !user ?
                         <>
                             <Button onClick={handleGoogleSignIn} className='mb-1' variant="outline-success">Sign In With <FaGoogle></FaGoogle></Button>
+                            <Button onClick={handleTwitterSignIn} className='mb-1' variant="outline-primary">Sign In With <FaTwitter></FaTwitter></Button>
                             <Button onClick={handleGithubSignIn} variant="outline-dark">Sign In With <FaGithub></FaGithub></Button>
                         </>
                         :

@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { BiLogIn } from 'react-icons/bi';
+import { AiOutlineUserAdd } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
@@ -30,16 +32,29 @@ const Header = () => {
                         </NavDropdown>
                     </Nav>
                     <Nav>
-                        <Nav.Link>{user?.displayName}</Nav.Link>
                         {
                             user?.uid ?
-                                <Image
-                                    roundedCircle
-                                    style={{ height: '35px' }}
-                                    src={user?.photoURL}
-                                ></Image>
-                                : <FaUser></FaUser> 
+                                <>
+                                    <Nav.Link>{user?.displayName}</Nav.Link>
+                                    <span>
+                                        {
+                                            user?.uid ?
+                                                <Image
+                                                    roundedCircle
+                                                    style={{ height: '30px' }}
+                                                    src={user.photoURL}
+                                                ></Image>
+                                                : <FaUser></FaUser>
+                                        }
+                                    </span>
+                                </>
+                                :
+                                <>
+                                    <Link to='/login' className='me-1'><Button className='mb-1' variant="primary">Login <BiLogIn></BiLogIn></Button></Link>
+                                    <Link to='/register'><Button className='mb-1' variant="outline-info">Register <AiOutlineUserAdd></AiOutlineUserAdd></Button></Link>
+                                </>
                         }
+
                     </Nav>
                     <div className='d-lg-none'>
                         <LeftNav></LeftNav>
