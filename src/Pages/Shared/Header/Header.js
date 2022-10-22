@@ -9,7 +9,6 @@ import LeftNav from '../LeftNav/LeftNav';
 
 const Header = () => {
     const { user } = useContext(AuthContext);
-    console.log(user);
     return (
         <Navbar collapseOnSelect expand="lg" className='mb-4' bg="light" variant="light">
             <Container>
@@ -41,7 +40,7 @@ const Header = () => {
                                             user?.uid ?
                                                 <Image
                                                     roundedCircle
-                                                    style={{ height: '30px' }}
+                                                    style={{ height: '35px', width: '35px' }}
                                                     src={user.photoURL}
                                                 ></Image>
                                                 : <FaUser></FaUser>

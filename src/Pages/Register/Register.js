@@ -5,7 +5,7 @@ import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Register = () => {
 
-    const { createUser } = useContext(AuthContext);
+    const { createUser, updateProfileInfo } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -17,12 +17,21 @@ const Register = () => {
         const email = form.email.value;
         const password = form.password.value;
 
+        const userInfo = {displayName: name, photoURL: photoURL}
+
         console.log(name, photoURL, email, password);
 
         createUser(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                updateProfileInfo(userInfo)
+                .then(() => {
+                    console.log("Profile Updated");
+                })
+                .catch(err => {
+                    console.error(err)
+                })
                 form.reset();
                 navigate('/login');
             })
