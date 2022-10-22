@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import LeftNav from '../LeftNav/LeftNav';
 
 const Header = () => {
+    const { user } = useContext(AuthContext);
+    console.log(user);
     return (
         <Navbar collapseOnSelect expand="lg" className='mb-4' bg="light" variant="light">
             <Container>

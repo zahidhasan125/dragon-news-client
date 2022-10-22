@@ -36,8 +36,7 @@ const NewsSummaryCard = ({ news }) => {
                 </Card.Body>
                 <Card.Footer className="text-muted d-flex justify-content-between">
                     <div><FaStar className='text-warning me-1'/>{rating?.number}</div>
-                    <div><FaRegEye className='me-1'/>{total_view}</div>
-                    
+                    <div><FaRegEye className='me-1'/>{total_view}</div>                    
                 </Card.Footer>
             </Card>
         </div>
