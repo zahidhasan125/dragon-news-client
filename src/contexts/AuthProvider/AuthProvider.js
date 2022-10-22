@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react';
-import { getAuth, signInWithPopup} from 'firebase/auth'
+import React, { createContext, useEffect, useState } from 'react';
+import { getAuth, onAuthStateChanged, signInWithPopup, signOut} from 'firebase/auth'
 import app from '../../firebase/firebase.config';
 
 export const AuthContext = createContext();
@@ -14,8 +14,24 @@ const AuthProvider = ({ children }) => {
     const providerLogin = (provider) => {
         return signInWithPopup(auth, provider);
     }
+
+    const logOut = () => {
+        signOut(auth)
+    }
+
+//observer for login change events
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser)
+        })
+        // unmount when not using side effect
+        return () => {
+            unsubscribe()
+        };
+    },[])
     
-    const authValue = {user, providerLogin}
+    const authValue = {user, providerLogin, logOut}
     return (
         <AuthContext.Provider value={authValue}>
             {children}

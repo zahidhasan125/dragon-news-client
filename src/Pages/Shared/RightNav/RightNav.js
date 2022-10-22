@@ -2,13 +2,14 @@ import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import { useContext } from 'react';
 import { Button, ButtonGroup, ListGroup } from 'react-bootstrap';
 import { FaGoogle, FaGithub, FaFacebook, FaYoutube, FaTwitter, FaTwitch, FaWhatsapp, FaDiscord } from 'react-icons/fa';
+import { BiLogOut } from "react-icons/bi";
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import BrandCarousel from '../BrandCarousel/BrandCarousel';
 
 
 const RightNav = () => {
 
-    const { providerLogin } = useContext(AuthContext);
+    const { user, providerLogin, logOut } = useContext(AuthContext);
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
@@ -37,11 +38,28 @@ const RightNav = () => {
 
     }
 
+    const handleSignOut = () => {
+        logOut()
+            .then(result => {
+            console.log(result);
+            })
+            .catch(error => {
+            console.error(error);
+        })
+    }
+
     return (
         <div>
             <ButtonGroup vertical>
-                <Button onClick={handleGoogleSignIn} className='mb-1' variant="outline-success">Sign In With <FaGoogle></FaGoogle></Button>
-                <Button onClick={handleGithubSignIn} variant="outline-dark">Sign In With <FaGithub></FaGithub></Button>
+                {
+                    !user ?
+                        <>
+                            <Button onClick={handleGoogleSignIn} className='mb-1' variant="outline-success">Sign In With <FaGoogle></FaGoogle></Button>
+                            <Button onClick={handleGithubSignIn} variant="outline-dark">Sign In With <FaGithub></FaGithub></Button>
+                        </>
+                        :
+                        <Button onClick={handleSignOut} variant="outline-danger"><BiLogOut className='me-2'></BiLogOut>Sign Out</Button>
+                }
             </ButtonGroup>
             <div className='mt-4'>
                 <p>Find Us On</p>
