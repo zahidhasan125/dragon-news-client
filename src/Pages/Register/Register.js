@@ -1,15 +1,20 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Register = () => {
 
     const [error, setError] = useState("");
-
-    const { createUser, updateProfileInfo } = useContext(AuthContext);
+    const [tacAccepted, setTacAccepted] = useState(false);
+    const { createUser, verifyEmail, updateProfileInfo } = useContext(AuthContext);
 
     const navigate = useNavigate();
+
+    const handleTacAccepted = (event) => {
+        setTacAccepted(event.target.checked)
+    }
 
     const handleRegisterSubmit = (event) => {
         event.preventDefault();
@@ -23,6 +28,7 @@ const Register = () => {
         const userInfo = { displayName: name, photoURL: photoURL }
 
         // console.log(name, photoURL, email, password);
+        
 
         if (password.length <6 || confirm.length < 6) { 
             setError("Password must be at least 6 characters");
@@ -31,10 +37,10 @@ const Register = () => {
 
         if (password === confirm) {
             createUser(email, password)
-            .then(result => {
-                const user = result.user;
+            .then(result => {                
                 setError("");
-                console.log(user);
+                emailVerification();
+                toast.success("Please verify your email, (email might be send to spam folder.)")
                 updateProfileInfo(userInfo)
                     .then(() => {
                         console.log("Profile Updated");
@@ -55,10 +61,18 @@ const Register = () => {
         else {
             setError("Password does not match");
             return;
-        }
-        
+        }   
 
     }
+
+    const emailVerification = () => {
+        verifyEmail()
+            .then(() => { })
+            .catch(error => {
+            console.log(error);
+        })
+    }
+    
 
     return (
         <div>
@@ -86,11 +100,14 @@ const Register = () => {
                     <Form.Control type="password" name='confirm' placeholder="Re-type Password" required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label={
+                    <Form.Check
+                        type="checkbox"
+                        onClick={handleTacAccepted}
+                        label={
                         <>I accept the <Link to='/terms'>terms and conditions</Link></>
                     } required />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={!tacAccepted}>
                     Register
                 </Button>
                 <Form.Text className='text-danger ms-2'>
