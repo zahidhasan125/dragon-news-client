@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Login = () => {
 
+    const [error, setError] = useState("");
     const { userLogin } = useContext(AuthContext);
 
     const navigate = useNavigate();
@@ -18,10 +19,17 @@ const Login = () => {
         userLogin(email, password)
             .then(() => {
                 form.reset();
+                setError("");
                 navigate('/');
             })
             .catch(error => {
-                console.error(error);
+                console.log(error.message);
+                if (error.message === "Firebase: Error (auth/user-not-found).") {
+                    setError("User Not Found");
+                }
+                else if (error.message === "Firebase: Error (auth/wrong-password).") {
+                    setError("Wrong Password");
+                }
             })
     }
     return (
@@ -40,9 +48,13 @@ const Login = () => {
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="I agree to the terms and conditions" required />
                 </Form.Group>
+                
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
+                <Form.Text className='text-danger ms-2'>
+                    {error}
+                </Form.Text>
                 <p>
                     New to this website? <Link to='/register'>Create an account</Link>
                 </p>

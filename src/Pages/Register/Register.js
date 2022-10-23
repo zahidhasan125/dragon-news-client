@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Register = () => {
+
+    const [error, setError] = useState("");
 
     const { createUser, updateProfileInfo } = useContext(AuthContext);
 
@@ -16,28 +18,45 @@ const Register = () => {
         const photoURL = form.photoURL.value;
         const email = form.email.value;
         const password = form.password.value;
+        const confirm = form.confirm.value;
 
-        const userInfo = {displayName: name, photoURL: photoURL}
+        const userInfo = { displayName: name, photoURL: photoURL }
 
-        console.log(name, photoURL, email, password);
+        // console.log(name, photoURL, email, password);
 
-        createUser(email, password)
+        if (password.length <6 || confirm.length < 6) { 
+            setError("Password must be at least 6 characters");
+            return;
+        }
+
+        if (password === confirm) {
+            createUser(email, password)
             .then(result => {
                 const user = result.user;
+                setError("");
                 console.log(user);
                 updateProfileInfo(userInfo)
-                .then(() => {
-                    console.log("Profile Updated");
-                })
-                .catch(err => {
-                    console.error(err)
-                })
+                    .then(() => {
+                        console.log("Profile Updated");
+                    })
+                    .catch(err => {
+                        console.log(err.message)                        
+                    })
                 form.reset();
                 navigate('/login');
             })
             .catch(error => {
                 console.error(error);
+                if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+                    setError("Email already in use");
+                }
             })
+        }
+        else {
+            setError("Password does not match");
+            return;
+        }
+        
 
     }
 
@@ -47,7 +66,7 @@ const Register = () => {
                 <h2>Register</h2>
                 <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Full Name</Form.Label>
-                    <Form.Control type="text" name='name' placeholder="Enter your full name" />
+                    <Form.Control type="text" name='name' placeholder="Enter your full name" required/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPhotoUrl">
                     <Form.Label>Photo Url</Form.Label>
@@ -72,6 +91,9 @@ const Register = () => {
                 <Button variant="primary" type="submit">
                     Register
                 </Button>
+                <Form.Text className='text-danger ms-2'>
+                    {error}
+                </Form.Text>
                 <p>
                     Already have an account? <Link to='/login'>Please Login</Link>
                 </p>
