@@ -30,39 +30,44 @@ const Register = () => {
         // console.log(name, photoURL, email, password);
         
 
-        if (password.length <6 || confirm.length < 6) { 
+        if (password.length < 6 || confirm.length < 6) {
             setError("Password must be at least 6 characters");
             return;
         }
 
         if (password === confirm) {
             createUser(email, password)
-            .then(result => {                
-                setError("");
-                emailVerification();
-                toast.success("Please verify your email, (email might be send to spam folder.)")
-                updateProfileInfo(userInfo)
-                    .then(() => {
-                        console.log("Profile Updated");
-                    })
-                    .catch(err => {
-                        console.log(err.message)                        
-                    })
-                form.reset();
-                navigate('/login');
-            })
-            .catch(error => {
-                console.error(error);
-                if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-                    setError("Email already in use");
-                }
-            })
+                .then(result => {
+                    setError("");
+                    emailVerification();
+                    toast.success("Thanks for registering. Please verify your email, (email might be send to spam folder.)")
+                    updateUserProfile();
+                    form.reset();
+                    navigate('/login');
+                })
+                .catch(error => {
+                    console.error(error);
+                    if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+                        setError("Email already in use");
+                    }
+                })
         }
         else {
             setError("Password does not match");
             return;
-        }   
+        }
 
+    
+
+        const updateUserProfile = () => {
+            updateProfileInfo(userInfo)
+                .then(() => {
+                    console.log("Profile Updated");
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+        }
     }
 
     const emailVerification = () => {

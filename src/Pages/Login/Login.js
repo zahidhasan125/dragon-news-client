@@ -58,6 +58,9 @@ const Login = () => {
                     {error}
                 </Form.Text>
                 <p>
+                    Forgot password? <Link to='/reset-password'>Request reset.</Link>
+                </p>
+                <p>
                     New to this website? <Link to='/register'>Create an account</Link>
                 </p>
             </Form>
