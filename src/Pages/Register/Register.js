@@ -86,7 +86,9 @@ const Register = () => {
                     <Form.Control type="password" name='confirm' placeholder="Re-type Password" required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="I agree to the terms and conditions" required />
+                    <Form.Check type="checkbox" label={
+                        <>I accept the <Link to='/terms'>terms and conditions</Link></>
+                    } required />
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Register

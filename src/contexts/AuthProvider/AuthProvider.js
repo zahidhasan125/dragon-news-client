@@ -10,12 +10,15 @@ const AuthProvider = ({ children }) => {
 
 
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const createUser = (email, password) => {
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
     const userLogin = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
@@ -24,10 +27,12 @@ const AuthProvider = ({ children }) => {
     }
 
     const providerLogin = (provider) => {
+        setLoading(true);
         return signInWithPopup(auth, provider);
     }
 
     const logOut = () => {
+        setLoading(true);
         return signOut(auth)
     }
 
@@ -35,7 +40,8 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser)
+            setUser(currentUser);
+            setLoading(false);
         })
         // unmount when not using side effect
         return () => {
@@ -43,7 +49,7 @@ const AuthProvider = ({ children }) => {
         };
     }, [])
 
-    const authValue = { user, providerLogin, logOut, createUser, userLogin, updateProfileInfo }
+    const authValue = { user, loading, providerLogin, logOut, createUser, userLogin, updateProfileInfo }
     return (
         <AuthContext.Provider value={authValue}>
             {children}
