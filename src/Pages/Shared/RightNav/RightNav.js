@@ -9,11 +9,13 @@ import BrandCarousel from '../BrandCarousel/BrandCarousel';
 
 const RightNav = () => {
 
-    const { user, providerLogin, logOut } = useContext(AuthContext);
+    const { user, providerLogin, updateProfileInfo, logOut } = useContext(AuthContext);
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const twitterProvider = new TwitterAuthProvider();
+
+    const userInfo = {emailVerified: true}
 
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
@@ -31,7 +33,9 @@ const RightNav = () => {
         providerLogin(githubProvider)
             .then(result => {
                 const user = result.user;
+                updateProfileInfo(userInfo);
                 console.log(user);
+                
             })
             .catch(error => {
                 console.error(error);
@@ -42,6 +46,7 @@ const RightNav = () => {
     const handleTwitterSignIn = () => {
         providerLogin(twitterProvider)
             .then(result => {
+                updateProfileInfo(userInfo);
                 const user = result.user;
                 console.log(user)
             })
