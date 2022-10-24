@@ -22,7 +22,7 @@ const PasswordReset = () => {
         <Form  className='w-50 mx-auto' onSubmit={handlePasswordReset}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" name='email' placeholder="Enter email" />
+                <Form.Control type="email" name='email' placeholder="Enter email" required/>
             </Form.Group>
             <Button variant="primary" type="submit">
                 Send password reset Email
