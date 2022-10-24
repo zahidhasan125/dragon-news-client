@@ -4,6 +4,7 @@ import Category from "../Pages/Category/Category";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import News from "../Pages/News/News";
+import ErrorPage from "../Pages/Others/ErrorPage/ErrorPage";
 import PasswordReset from "../Pages/Others/PasswordReset";
 import Profile from "../Pages/Others/Profile/Profile";
 import TermsAndConditions from "../Pages/Others/TermsAndConditions";
@@ -15,6 +16,7 @@ export const routes = createBrowserRouter(
         {
             path: '/',
             element: <Main></Main>,
+            errorElement: <ErrorPage/>,
             children: [
                 {
                     path: '/',
@@ -51,6 +53,7 @@ export const routes = createBrowserRouter(
                     path: '/profile',
                     element: <PrivateRoute><Profile></Profile></PrivateRoute>
                 }
+                
             ]
         }
     ]
