@@ -1,16 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 
 const Register = () => {
 
     const [error, setError] = useState("");
     const [tacAccepted, setTacAccepted] = useState(false);
-    const { createUser, verifyEmail, updateProfileInfo } = useContext(AuthContext);
+    const { createUser, verifyEmail, logOut, updateProfileInfo } = useContext(AuthContext);
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
 
     const handleTacAccepted = (event) => {
         setTacAccepted(event.target.checked)
@@ -43,7 +45,8 @@ const Register = () => {
                     toast.success("Thanks for registering. Please verify your email, (email might be send to spam folder.)")
                     updateUserProfile();
                     form.reset();
-                    navigate('/login');
+                    userLogOut();
+                    navigate(from, {replace: true});
                 })
                 .catch(error => {
                     console.error(error);
@@ -78,6 +81,13 @@ const Register = () => {
         })
     }
     
+    const userLogOut = () => {
+        logOut()
+            .then(() => { })
+            .catch(error => {
+                console.log(error)                
+        })
+    }
 
     return (
         <div>

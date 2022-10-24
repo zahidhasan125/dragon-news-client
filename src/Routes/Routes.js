@@ -5,6 +5,7 @@ import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import News from "../Pages/News/News";
 import PasswordReset from "../Pages/Others/PasswordReset";
+import Profile from "../Pages/Others/Profile/Profile";
 import TermsAndConditions from "../Pages/Others/TermsAndConditions";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
@@ -45,6 +46,10 @@ export const routes = createBrowserRouter(
                 {
                     path: '/reset-password',
                     element: <PasswordReset></PasswordReset>
+                },
+                {
+                    path: '/profile',
+                    element: <PrivateRoute><Profile></Profile></PrivateRoute>
                 }
             ]
         }

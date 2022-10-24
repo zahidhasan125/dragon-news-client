@@ -5,24 +5,27 @@ import { FaGoogle, FaGithub, FaFacebook, FaYoutube, FaTwitter, FaTwitch, FaWhats
 import { BiLogOut } from "react-icons/bi";
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import BrandCarousel from '../BrandCarousel/BrandCarousel';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const RightNav = () => {
 
-    const { user, providerLogin, updateProfileInfo, logOut } = useContext(AuthContext);
+    const { user, providerLogin, logOut } = useContext(AuthContext);
 
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
     const twitterProvider = new TwitterAuthProvider();
 
-    const userInfo = {emailVerified: true}
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
 
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-
+                navigate(from, {replace: true})
             })
             .catch(error => {
                 console.error(error);
@@ -33,8 +36,8 @@ const RightNav = () => {
         providerLogin(githubProvider)
             .then(result => {
                 const user = result.user;
-                updateProfileInfo(userInfo);
                 console.log(user);
+                navigate(from, {replace: true})
                 
             })
             .catch(error => {
@@ -46,9 +49,9 @@ const RightNav = () => {
     const handleTwitterSignIn = () => {
         providerLogin(twitterProvider)
             .then(result => {
-                updateProfileInfo(userInfo);
                 const user = result.user;
-                console.log(user)
+                console.log(user);
+                navigate(from, {replace: true})
             })
             .catch(error => {
             console.error(error)

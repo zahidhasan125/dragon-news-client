@@ -16,8 +16,8 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#features">All News</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Link className='me-2' to="/">All News</Link>
+                        <Link to="#footer">Pricing</Link>
                         <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
@@ -35,7 +35,7 @@ const Header = () => {
                             user?.uid ?
                                 <>
                                     <Nav.Link>{user?.displayName}</Nav.Link>
-                                    <span>
+                                    <Link to="/profile">
                                         {
                                             user?.uid ?
                                                 <Image
@@ -45,7 +45,7 @@ const Header = () => {
                                                 ></Image>
                                                 : <FaUser></FaUser>
                                         }
-                                    </span>
+                                    </Link>
                                 </>
                                 :
                                 <>
